@@ -71,6 +71,8 @@
 #include <pcl_ros/transforms.h>
 #include <pcl_ros/point_cloud.h>
 
+#include <pcl_conversions/pcl_conversions.h>
+
 #include "tabletop_segmenter/marker_generator.h"
 #include "tabletop_segmenter/utilities.h"
 #include "tabletop_segmenter/TabletopSegmentation.h"
@@ -535,7 +537,7 @@ bool getPlanePoints (const pcl::PointCloud<PointT> &table,
 		     sensor_msgs::PointCloud &table_points)
 {
   // Prepare the output
-  table_points.header = table.header;
+  table_points.header = pcl_conversions::fromPCL(table.header);
   table_points.points.resize (table.points.size ());
   for (size_t i = 0; i < table.points.size (); ++i)
   {
@@ -546,8 +548,8 @@ bool getPlanePoints (const pcl::PointCloud<PointT> &table,
 
   // Transform the data
   tf::TransformListener listener;
-  tf::StampedTransform table_pose_frame(table_plane_trans, table.header.stamp, 
-                                        table.header.frame_id, "table_frame");
+  tf::StampedTransform table_pose_frame(table_plane_trans, pcl_conversions::fromPCL(table.header).stamp, 
+                                        pcl_conversions::fromPCL(table.header).frame_id, "table_frame");
   listener.setTransform(table_pose_frame);
   std::string error_msg;
   if (!listener.canTransform("table_frame", 
@@ -569,7 +571,7 @@ bool getPlanePoints (const pcl::PointCloud<PointT> &table,
 	      table_points.header.frame_id.c_str(), ex.what());
     return false;
   }
-  table_points.header.stamp = table.header.stamp;
+  table_points.header.stamp = pcl_conversions::fromPCL(table.header).stamp;
   table_points.header.frame_id = "table_frame";
   return true;
 }

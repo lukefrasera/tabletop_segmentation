@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   image_geometry
   pcl_ros
+  pcl_conversions
   roscpp
   rospy
   sensor_msgs
@@ -111,9 +112,9 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
  INCLUDE_DIRS include
- LIBRARIES tabletop_segmenter
- CATKIN_DEPENDS cv_bridge geometry_msgs image_geometry pcl_ros roscpp rospy sensor_msgs std_msgs tf visualization_msgs
- DEPENDS system_lib
+ # LIBRARIES tabletop_segmenter
+ CATKIN_DEPENDS cv_bridge geometry_msgs image_geometry pcl_ros roscpp rospy sensor_msgs std_msgs tf visualization_msgs usc_utilities
+ # DEPENDS system_lib
 )
 
 ###########
